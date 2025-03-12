@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Asegúrate de que haya un margen inferior que sea la altura del footer */
+  margin: 0 0 70px; /* 100px: ajusta según la altura de tu footer */
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+
+}
