@@ -1,0 +1,63 @@
+name: CI - Testing & Linting
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Ejecutar pruebas y linters
+    runs-on: ubuntu-24.04
+
+    env:
+      DATABASE_URL: "sqlite:///./test.db"  # Usamos SQLite en lugar de MySQL
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias del backend
+        run: |
+          cd app/backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ejecutar pruebas del backend con pytest
+        run: |
+          cd app/backend
+          pytest --disable-warnings
+
+      - name: Linting backend con flake8
+        run: |
+          cd app/backend
+          flake8 . || true
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias del frontend
+        run: |
+          cd app/frontend
+          npm install
+
+      - name: Ejecutar pruebas del frontend con Vitest
+        run: |
+          cd app/frontend
+          npm test
+
+      - name: Linting frontend con ESLint
+        continue-on-error: true
+        run: |
+          cd app/frontend
+          npm run lint || true
+
+

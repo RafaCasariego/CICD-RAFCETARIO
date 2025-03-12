@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-fargate
+  labels:
+    app: hello
+spec:
+  containers:
+  - name: hello
+    image: public.ecr.aws/eks-distro/kubernetes/pause:3.5
+  nodeSelector:
+    kubernetes.io/os: linux
