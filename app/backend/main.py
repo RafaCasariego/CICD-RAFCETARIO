@@ -211,6 +211,11 @@ async def login(datos_login: OAuth2PasswordRequestForm = Depends(), db: Session 
     }
 
 
+# Endpoint raiz
+@app.get("/")
+def read_root():
+    return {"message": "API del Rafcetario :)"}
+
 
 # Endpoint para obtener el perfil del usuario autenticado
 @app.get("/perfil", response_model=UsuarioResponse)
