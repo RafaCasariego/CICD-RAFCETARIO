@@ -1,4 +1,4 @@
-# 📌 Rafcetario - Proyecto DevOps 🍽️🚀
+# Proyecto DevOps
 
 ## 📌 Descripción
 Este es un proyecto fullstack para gestionar recetas, con un enfoque en DevOps. 

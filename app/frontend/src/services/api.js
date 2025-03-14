@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://rafcetario-ep7z0592q-rafacasariegos-projects.vercel.app";
+const API_URL = "http://localhost:8000";
 
 export const api = axios.create({
   baseURL: API_URL,
