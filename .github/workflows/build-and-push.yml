@@ -30,11 +30,11 @@ jobs:
 
       - name: Construir y etiquetar imagen del backend
         run: |
-          docker build -t backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest ./app/backend
+          docker build -t backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest ./docker/backend
 
       - name: Construir y etiquetar imagen del frontend
         run: |
-          docker build -t frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest ./app/frontend
+          docker build -t frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest ./docker/frontend
 
       - name: Subir imágenes a AWS ECR
         run: |
