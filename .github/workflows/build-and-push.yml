@@ -30,15 +30,15 @@ jobs:
 
       - name: Construir y etiquetar imagen del backend
         run: |
-          docker build -f docker/backend/Dockerfile -t backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest .
+          docker build -f docker/backend/Dockerfile -t rafcetario-backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest ./app
 
       - name: Construir y etiquetar imagen del frontend
         run: |
-          docker build -f docker/frontend/Dockerfile -t frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest .
+          docker build -f docker/frontend/Dockerfile -t rafcetario-frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest ./docker/frontend
 
       - name: Subir imágenes a AWS ECR
         run: |
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }}
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }}
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest
