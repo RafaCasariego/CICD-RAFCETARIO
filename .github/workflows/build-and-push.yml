@@ -1,0 +1,47 @@
+name: CD - Build & Push Docker Images to AWS ECR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    name: Construir y subir imágenes Docker a AWS ECR
+    runs-on: ubuntu-24.04
+
+    needs: [test]
+    if: success()
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1  
+
+      - name: Iniciar sesión en AWS ECR
+        run: |
+          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+
+      - name: Construir y etiquetar imagen del backend
+        run: |
+          docker build -t backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest ./app/backend
+
+      - name: Construir y etiquetar imagen del frontend
+        run: |
+          docker build -t frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest ./app/frontend
+
+      - name: Subir imágenes a AWS ECR
+        run: |
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/backend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/backend:latest
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/frontend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/frontend:latest
