@@ -30,11 +30,11 @@ jobs:
 
       - name: Construir y etiquetar imagen del backend
         run: |
-          docker build -f docker/backend/Dockerfile -t rafcetario-backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest ./app
+          docker build -f docker/backend/Dockerfile -t rafcetario-backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest .
 
       - name: Construir y etiquetar imagen del frontend
         run: |
-          docker build -f docker/frontend/Dockerfile -t rafcetario-frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest ./docker/frontend
+          docker build -f docker/frontend/Dockerfile -t rafcetario-frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest .
 
       - name: Subir imágenes a AWS ECR
         run: |
