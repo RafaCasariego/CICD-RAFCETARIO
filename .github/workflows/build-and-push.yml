@@ -1,20 +1,17 @@
 name: CD - Build & Push Docker Images to AWS ECR
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI - Testing & Linting"]
+    types:
+      - completed
+    conclusions:
+      - success  
 
 jobs:
   build-and-push:
     name: Construir y subir imágenes Docker a AWS ECR
     runs-on: ubuntu-24.04
-
-    needs: [test]
-    if: success()
 
     steps:
       - name: Checkout del código
