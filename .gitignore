@@ -1,0 +1,49 @@
+# Archivos de entorno
+.env
+*.env
+
+# Archivos de caché
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales de Python
+venv/
+env/
+
+# Dependencias de Node.js
+node_modules/
+package-lock.json
+
+# Archivos generados por Vite/React
+dist/
+.vite/
+
+# Archivos de configuración de IDEs y editores
+.vscode/
+.idea/
+*.swp  # Vim swap files
+
+# Archivos de sistema (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Reportes de pruebas y caché de Playwright 
+playwright-report/
+test-results/
+
+# Secrets 
+infra/k8s/secret.yaml
+
+#Terraform
+infra/terraform/.terraform/
+*.tfstate
+*.tfstate.backup
+.lock.hcl

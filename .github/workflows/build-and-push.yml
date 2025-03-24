@@ -1,0 +1,44 @@
+name: CD - Build & Push Docker Images to AWS ECR
+
+on:
+  workflow_run:
+    workflows: ["CI - Testing & Linting"]
+    types:
+      - completed
+    conclusions:
+      - success  
+
+jobs:
+  build-and-push:
+    name: Construir y subir imágenes Docker a AWS ECR
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1  
+
+      - name: Iniciar sesión en AWS ECR
+        run: |
+          aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+
+      - name: Construir y etiquetar imagen del backend
+        run: |
+          docker build -f docker/backend/Dockerfile -t rafcetario-backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest .
+
+      - name: Construir y etiquetar imagen del frontend
+        run: |
+          docker build -f docker/frontend/Dockerfile -t rafcetario-frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest .
+
+      - name: Subir imágenes a AWS ECR
+        run: |
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }}
+          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest
