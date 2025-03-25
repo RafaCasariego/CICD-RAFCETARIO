@@ -31,6 +31,8 @@ resource "aws_subnet" "public_subnet" {
 
   tags = {
     Name = "public-subnet"
+    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/cluster/rafcetario-cluster" = "owned"
   }
 }
 

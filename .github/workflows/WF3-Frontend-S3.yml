@@ -1,0 +1,44 @@
+name: CD - Deploy Frontend to S3
+
+on:
+  workflow_run:
+    workflows: ["CI - Testing & Linting"]
+    types:
+      - completed
+    conclusions:
+      - success  
+
+jobs:
+  deploy:
+    name: Subir frontend a S3
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias
+        run: |
+          cd app/frontend
+          npm install
+
+      - name: Compilar frontend
+        run: |
+          cd app/frontend
+          npm run build
+
+      - name: Subir a S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: rafcetario-frontend
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1
+          SOURCE_DIR: app/frontend/dist

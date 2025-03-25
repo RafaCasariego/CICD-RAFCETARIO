@@ -1,4 +1,4 @@
-name: CD - Build & Push Docker Images to AWS ECR
+name: CD - Build & Push Backend Docker Image to AWS ECR
 
 on:
   workflow_run:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Construir y subir imágenes Docker a AWS ECR
+    name: Construir y subir imagen del backend a ECR
     runs-on: ubuntu-24.04
 
     steps:
@@ -32,13 +32,7 @@ jobs:
         run: |
           docker build -f docker/backend/Dockerfile -t rafcetario-backend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest .
 
-      - name: Construir y etiquetar imagen del frontend
-        run: |
-          docker build -f docker/frontend/Dockerfile -t rafcetario-frontend:latest -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }} -t ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest .
-
       - name: Subir imágenes a AWS ECR
         run: |
           docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:${{ github.sha }}
           docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-backend:latest
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:${{ github.sha }}
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/rafcetario-frontend:latest
