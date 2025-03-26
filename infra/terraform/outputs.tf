@@ -13,3 +13,8 @@ output "cluster_certificate_authority_data" {
 output "node_group_role_arn" {
   value = aws_iam_role.eks_node_role.arn
 }
+
+output "subnet_ids" {
+  value = data.aws_subnets.private_subnets.ids
+  description = "IDs de las subnets usadas por el cluster EKS"
+}
