@@ -4,10 +4,11 @@ metadata:
   name: backend-service
   namespace: rafcetario
 spec:
-  type: LoadBalancer
+  type: NodePort  
   selector:
     app: backend
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 8000
