@@ -5,9 +5,13 @@ metadata:
   namespace: rafcetario
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/security-groups: ${ALB_SG_ID}
+    alb.ingress.kubernetes.io/subnets: subnet-0e99fe1b302033ef7,subnet-0ed7b73bbeb360ef2,subnet-0fb9b410a08547aca
+
+
 spec:
   ingressClassName: alb
   rules:

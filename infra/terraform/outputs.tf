@@ -18,3 +18,7 @@ output "subnet_ids" {
   value = data.aws_subnets.private_subnets.ids
   description = "IDs de las subnets usadas por el cluster EKS"
 }
+
+output "alb_sg_id" {
+  value = aws_security_group.alb_sg.id
+}
