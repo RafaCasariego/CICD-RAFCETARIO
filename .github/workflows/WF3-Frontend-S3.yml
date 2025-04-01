@@ -6,7 +6,7 @@ on:
     types:
       - completed
     conclusions:
-      - success  
+      - success
 
 jobs:
   deploy:
@@ -32,10 +32,10 @@ jobs:
           cd app/frontend
           npm run build
 
-      - name: Subir a S3
+      - name: Subir a S3 (sin borrar config.js)
         uses: jakejarvis/s3-sync-action@master
         with:
-          args: --delete
+          args: --delete --exclude "config.js"
         env:
           AWS_S3_BUCKET: rafcetario-frontend
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
